@@ -3,9 +3,11 @@ import "../style/global.css";
 import EditQuiz from "../component/EditQuiz";
 import { gsap } from "gsap";
 
-const { innerWidth: width } = window;
-
 export default function Home() {
+  const isBrowser = typeof window !== "undefined";
+
+  const { innerWidth: width } = isBrowser && window;
+
   const initialQuiz = [
     {
       Question: "What's the most popular programing language",
