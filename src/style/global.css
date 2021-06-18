@@ -102,6 +102,10 @@ ul li {
   padding-top: 11px;
 }
 
+.edit-text {
+  font-size: 18px;
+}
+
 .quiz-containor button {
   background-color: rgb(16, 101, 212);
   width: 100%;
@@ -190,6 +194,10 @@ ul li {
   .quiz-containor {
     margin: 5px;
     width: auto;
+  }
+
+  .edit-text {
+    font-size: 14px;
   }
 }
 

@@ -364,7 +364,7 @@ var _default = ({
       } else {
         headComponents.unshift( /*#__PURE__*/React.createElement("style", {
           "data-href": `${__PATH_PREFIX__}/${style.name}`,
-          id: `gatsby-global-css`,
+          "data-identity": `gatsby-global-css`,
           dangerouslySetInnerHTML: {
             __html: style.content
           }

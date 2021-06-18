@@ -268,15 +268,15 @@ export default function Home() {
             style={{ justifyContent: "center", display: "flex", width: "100%" }}
           >
             <p
+              className="edit-text"
               style={{
                 color: "rgb(121, 121, 121)",
-                fontSize: width < 450 ? 12 : 18,
               }}
             >
               write yuor own questions ?
             </p>
             <button
-              style={{ fontSize: width < 450 ? 12 : 18 }}
+              className="edit-text"
               className="edit-button"
               onClick={handleEdit}
             >
@@ -287,16 +287,16 @@ export default function Home() {
             style={{ justifyContent: "center", display: "flex", width: "100%" }}
           >
             <p
+              className="edit-text"
               style={{
                 color: "rgb(121, 121, 121)",
                 margin: 0,
-                fontSize: width < 450 ? 14 : 18,
               }}
             >
               Reset questions ?
             </p>
             <button
-              style={{ fontSize: width < 450 ? 14 : 18 }}
+              className="edit-text"
               className="edit-button"
               onClick={() => {
                 setQuizData(initialQuiz);

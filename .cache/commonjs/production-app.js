@@ -172,11 +172,11 @@ window.___loader = _loader.publicLoader;
       return /*#__PURE__*/_react.default.createElement(GatsbyRoot, null, SiteRoot);
     };
 
-    const renderer = (0, _apiRunnerBrowser.apiRunner)(`replaceHydrateFunction`, undefined, process.env.GATSBY_EXPERIMENTAL_CONCURRENT_FEATURES ? _reactDom.default.unstable_createRoot : _reactDom.default.hydrate)[0];
+    const renderer = (0, _apiRunnerBrowser.apiRunner)(`replaceHydrateFunction`, undefined, _reactDom.default.createRoot ? _reactDom.default.createRoot : _reactDom.default.hydrate)[0];
     (0, _domready.default)(() => {
       const container = typeof window !== `undefined` ? document.getElementById(`___gatsby`) : null;
 
-      if (renderer === _reactDom.default.unstable_createRoot) {
+      if (renderer === _reactDom.default.createRoot) {
         renderer(container, {
           hydrate: true
         }).render( /*#__PURE__*/_react.default.createElement(App, null));

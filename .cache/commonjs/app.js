@@ -46,11 +46,6 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 // satisfy fast-refresh constraints
 module.hot.accept([`$virtual/async-requires`, `./api-runner-browser`, `./navigation`]);
 window.___emitter = _emitter.default;
-
-if (process.env.GATSBY_EXPERIMENTAL_CONCURRENT_FEATURES && !_reactDom.default.unstable_createRoot) {
-  throw new Error(`The GATSBY_EXPERIMENTAL_CONCURRENT_FEATURES flag is not compatible with your React version. Please install "react@0.0.0-experimental-57768ef90" and "react-dom@0.0.0-experimental-57768ef90" or higher.`);
-}
-
 const loader = new _devLoader.default(_asyncRequires.default, _matchPaths.default);
 (0, _loader.setLoader)(loader);
 loader.setApiRunner(_apiRunnerBrowser.apiRunner);
@@ -124,8 +119,8 @@ function notCalledFunction() {
   let defaultRenderer = _reactDom.default.render;
 
   if (focusEl && focusEl.children.length) {
-    if (process.env.GATSBY_EXPERIMENTAL_CONCURRENT_FEATURES && _reactDom.default.unstable_createRoot) {
-      defaultRenderer = _reactDom.default.unstable_createRoot;
+    if (_reactDom.default.createRoot) {
+      defaultRenderer = _reactDom.default.createRoot;
     } else {
       defaultRenderer = _reactDom.default.hydrate;
     }
@@ -165,10 +160,10 @@ function notCalledFunction() {
         indicatorMountElement.setAttribute(`id`, `query-on-demand-indicator-element`);
         document.body.append(indicatorMountElement);
 
-        if (renderer === _reactDom.default.unstable_createRoot) {
+        if (renderer === _reactDom.default.createRoot) {
           renderer(indicatorMountElement).render( /*#__PURE__*/_react.default.createElement(_loadingIndicator.LoadingIndicatorEventHandler, null));
         } else {
-          renderer( /*#__PURE__*/_react.default.createElement(_loadingIndicator.LoadingIndicatorEventHandler, null), indicatorMountElement);
+          _reactDom.default.render( /*#__PURE__*/_react.default.createElement(_loadingIndicator.LoadingIndicatorEventHandler, null), indicatorMountElement);
         }
       }
     }
@@ -191,7 +186,7 @@ function notCalledFunction() {
         dismissLoadingIndicator();
       }
 
-      if (renderer === _reactDom.default.unstable_createRoot) {
+      if (renderer === _reactDom.default.createRoot) {
         renderer(rootElement, {
           hydrate: true
         }).render( /*#__PURE__*/_react.default.createElement(App, null));
