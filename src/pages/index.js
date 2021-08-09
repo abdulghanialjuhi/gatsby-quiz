@@ -10,7 +10,7 @@ export default function Home() {
 
   const initialQuiz = [
     {
-      Question: "What's the most popular programing language",
+      question: "What's the most popular programing language",
       answers: [
         { answerText: "Java", id: "a" },
         { answerText: "C", id: "b" },
@@ -20,7 +20,7 @@ export default function Home() {
       correct: "c",
     },
     {
-      Question: "React js is a __ ",
+      question: "React js is a __ ",
       answers: [
         { answerText: "library", id: "a" },
         { answerText: "framework", id: "b" },
@@ -30,7 +30,7 @@ export default function Home() {
       correct: "b",
     },
     {
-      Question: "css is a __ ",
+      question: "css is a __ ",
       answers: [
         { answerText: "style sheet language", id: "a" },
         { answerText: "programing language", id: "b" },
@@ -40,7 +40,7 @@ export default function Home() {
       correct: "a",
     },
     {
-      Question: "HTML is used for _",
+      question: "HTML is used for _",
       answers: [
         { answerText: "styling components", id: "a" },
         { answerText: "structure components", id: "b" },
@@ -52,10 +52,9 @@ export default function Home() {
   ];
   const [promises, setPromises] = useState([]);
   const [currnetEdit, setCurrnetEdit] = useState(0);
-  const [quizData, setQuizData] = useState(initialQuiz);
+  const [quizData, setQuizData] = useState([]);
   const [currentQuiz, setCurrentQuiz] = useState(0);
   const [score, setScore] = useState(0);
-  const [currentQuizData, setCurrentQuizData] = useState(quizData[currentQuiz]);
   const [alert, setAlert] = useState(null);
   const [edit, setEdit] = useState(false);
 
@@ -63,7 +62,7 @@ export default function Home() {
   const ref = useRef();
 
   const inputRefs = [];
-
+  const currentQuizData = quizData[currentQuiz];
   const setRef = (ref) => {
     inputRefs.push(ref);
   };
@@ -79,20 +78,22 @@ export default function Home() {
   };
 
   useEffect(() => {
-    loadNext();
-  }, [quizData]);
-
-  useEffect(() => {
     const local = JSON.parse(localStorage.getItem("questions"));
 
     if (local) {
       setQuizData(local);
+    } else {
+      setQuizData(initialQuiz);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    loadNext();
-  }, [currentQuiz]);
+    deSelectAnswer();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentQuiz, quizData]);
 
   const handleEdit = () => {
     if (!edit) {
@@ -161,11 +162,6 @@ export default function Home() {
     }
   };
 
-  const loadNext = async () => {
-    deSelectAnswer();
-    setCurrentQuizData(quizData[currentQuiz]);
-  };
-
   const deSelectAnswer = () => {
     inputRefs[7] !== null &&
       inputRefs.forEach((inputRef) => {
@@ -186,13 +182,13 @@ export default function Home() {
       await setCurrentQuiz((prevCurrentQuiz) => prevCurrentQuiz + 1);
 
       if (currentQuiz < quizData.length) {
-        loadNext();
+        deSelectAnswer();
       } else {
         setQuizData();
       }
     } else if (!answer) {
       setAlert("please choose an answer");
-      setTimeout(function () {
+      setTimeout(() => {
         setAlert("");
       }, 3000);
     }
@@ -205,16 +201,18 @@ export default function Home() {
         style={{ display: edit ? "block" : "none" }}
         className="edit-container"
       >
-        <EditQuiz
-          currnetEdit={currnetEdit}
-          setCurrnetEdit={setCurrnetEdit}
-          setPromises={setPromises}
-          promises={promises}
-          handleEdit={handleEdit}
-          edit={edit}
-          quizData={quizData}
-          setQuizData={setQuizData}
-        />
+        {quizData.length > 0 && (
+          <EditQuiz
+            currnetEdit={currnetEdit}
+            setCurrnetEdit={setCurrnetEdit}
+            setPromises={setPromises}
+            promises={promises}
+            handleEdit={handleEdit}
+            edit={edit}
+            quizData={quizData}
+            setQuizData={setQuizData}
+          />
+        )}
       </div>
       <div
         ref={refMain}
@@ -228,7 +226,7 @@ export default function Home() {
           {currentQuizData ? (
             <>
               <div className="quiz-header">
-                <h2 className="question-text"> {currentQuizData.Question} </h2>
+                <h2 className="question-text"> {currentQuizData.question} </h2>
                 <div className="alert">{alert && <h4>{alert}</h4>}</div>
                 <ul>
                   {currentQuizData.answers.map((answer) => (
@@ -251,6 +249,8 @@ export default function Home() {
                 submit
               </button>
             </>
+          ) : quizData.length < 1 ? (
+            <></>
           ) : (
             <>
               <div className="quiz-header">
@@ -275,11 +275,7 @@ export default function Home() {
             >
               write yuor own questions ?
             </p>
-            <button
-              className="edit-text"
-              className="edit-button"
-              onClick={handleEdit}
-            >
+            <button className="edit-button" onClick={handleEdit}>
               Edit Questions
             </button>
           </div>
@@ -296,7 +292,6 @@ export default function Home() {
               Reset questions ?
             </p>
             <button
-              className="edit-text"
               className="edit-button"
               onClick={() => {
                 setQuizData(initialQuiz);
